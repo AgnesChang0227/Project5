@@ -29,7 +29,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get("/",(req,res)=>{
-    res.render("index");
+    res.render("index",{user:req.user});
 })
 app.use("/auth",authRoute);//get"/auth" 就進入authRoute
 app.use("/profile",profileRoute);
