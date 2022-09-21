@@ -2,6 +2,8 @@ import passport from "passport";
 import GoogleStrategy from "passport-google-oauth20";
 import User from "../models/user-model.js";
 
+
+
 //創建一個cookie => serialize UserID
 passport.serializeUser((user, done) => {
     console.log("Serializing user now");
@@ -30,7 +32,9 @@ passport.use(new GoogleStrategy({//檢查
                     done(null, foundUser);
                 } else {
                     new User({
-                        name: profile.displayName, googleID: profile.id, thumbnail: profile.photos[0].value,
+                        name: profile.displayName,
+                        googleID: profile.id,
+                        thumbnail: profile.photos[0].value,
                     }).save().then((newUser) => {
                         console.log("new user created");
                         done(null, newUser);
