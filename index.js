@@ -35,6 +35,7 @@ app.use((req,res,next)=>{
     //賦值後，success_msg可以在views中都會被偵測到
     res.locals.success_msg = req.flash("success_msg");
     res.locals.error_msg = req.flash("error_msg");
+    res.locals.error = req.flash("error");
     next();
 })
 app.use(passport.initialize());

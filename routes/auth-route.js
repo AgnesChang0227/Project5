@@ -7,6 +7,14 @@ import bcrypt from "bcryptjs";
 router.get("/login", (req, res) => {
     res.render("login",{user:req.user});
 })
+router.post("/login",passport.authenticate("local",{
+    failureRedirect:"/auth/login",
+    failureFlash:"Wrong email or password.",
+}),(req,res)=>{
+    res.redirect("/profile");
+    }
+)
+
 
 router.get("/logout",(req, res)=>{
     req.logOut();//passport提供的方法=>logout
@@ -37,8 +45,6 @@ router.post("/signup",(req,res)=>{
             }
         }
     })
-    //status 400 ,send
-
 })
 
 
