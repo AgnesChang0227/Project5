@@ -1,8 +1,8 @@
-import express, {raw} from "express";
+import express from "express";
 const router = express.Router();
 import passport from "passport";
 import User from "../models/user-model.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 router.get("/login", (req, res) => {
     res.render("login",{user:req.user});
@@ -17,23 +17,28 @@ router.get("/signup",(req,res)=>{
     res.render("signup",{user:req.user});
 })
 
-router.post("/signup",async (req,res)=>{
+router.post("/signup",(req,res)=>{
     let {name,email,password}=req.body;
     //check if the data is already exist
-    const emailExist = await User.findOne({email});
+    User.findOne({email}).then(async (user) => {
+        if (user) {
+            req.flash("error_msg", "Email has already been registered.");
+            res.redirect("/auth/signup");
+        } else {
+            password = bcrypt.hashSync(password,10);
+            let newUser = new User({name, email, password});
+            try {
+                await newUser.save();
+                req.flash("success_msg", "Registration succeed. You can login now.");
+                res.redirect("/auth/login");
+            } catch (err) {
+                req.flash("error_msg",err.errors.name.properties.message);
+                res.redirect("/auth/signup");
+            }
+        }
+    })
     //status 400 ,send
-    if (emailExist) return res.status(400).send("Email already exist")
-    const hash = await bcrypt.hash(password,10);
-    password=hash;
-    try{
-        const savedUser= await new User({name,email,password}).save();
-        res.status(200).send({
-            msg:"User saved",
-            saveObj:savedUser,
-        })
-    }catch (err){
-        res.status(400).send(err);
-    }
+
 })
 
 

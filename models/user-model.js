@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
+        minlength:8,
         maxlength:1024,//要預計hash過後的長度
     }
 })

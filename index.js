@@ -6,8 +6,9 @@ import mongoose from "mongoose";
 import authRoute from "./routes/auth-route.js";
 import profileRoute from "./routes/profileRoute.js";
 import "./config/passport.js";
-import cookieSession from "cookie-session";
 import passport from "passport";
+import session from "express-session";
+import flash from "connect-flash";
 
 mongoose.connect("mongodb://localhost:27017/myDatabase",{
     useNewUrlParser:true,
@@ -23,11 +24,22 @@ app.use(express.static("public"))
 app.set("view engine","ejs");
 app.use(express.json());//express 裡面包括了body-parser
 app.use(express.urlencoded({extended:true}));
-app.use(cookieSession({
-    keys:[process.env.SECRET],
-}))
+//順序: session => passport => flash
+app.use(session({
+    secret:process.env.SECRET,
+    resave:false,
+    saveUninitialized:true,
+}));
+app.use(flash());
+app.use((req,res,next)=>{
+    //賦值後，success_msg可以在views中都會被偵測到
+    res.locals.success_msg = req.flash("success_msg");
+    res.locals.error_msg = req.flash("error_msg");
+    next();
+})
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 app.get("/",(req,res)=>{
     res.render("index",{user:req.user});
