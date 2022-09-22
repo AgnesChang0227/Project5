@@ -19,6 +19,7 @@ mongoose.connect("mongodb://localhost:27017/myDatabase",{
 });
 
 //middleware
+app.use(express.static("public"))
 app.set("view engine","ejs");
 app.use(express.json());//express 裡面包括了body-parser
 app.use(express.urlencoded({extended:true}));
