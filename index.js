@@ -4,7 +4,7 @@ import express from "express";
 const app = express();
 import mongoose from "mongoose";
 import authRoute from "./routes/auth-route.js";
-import profileRoute from "./routes/profileRoute.js";
+import profileRoute from "./routes/profile-route.js";
 import "./config/passport.js";
 import passport from "passport";
 import session from "express-session";

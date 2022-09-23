@@ -15,7 +15,6 @@ router.post("/login",passport.authenticate("local",{
     }
 )
 
-
 router.get("/logout",(req, res)=>{
     req.logOut();//passport提供的方法=>logout
     res.redirect("/");//導回首頁
@@ -55,8 +54,7 @@ router.post("/signup",(req,res)=>{
 //     })
 // );
 //如果希望使用者每次登入時，可以選擇登入的帳號：
-router.get(
-    "/google",
+router.get("/google",
     passport.authenticate("google", {
         scope: ["profile", "email"],
         prompt: "select_account",
