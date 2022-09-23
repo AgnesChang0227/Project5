@@ -17,7 +17,7 @@ router.post("/login",passport.authenticate("local",{
         req.session.returnTo="";
         res.redirect(newPath);
     }else {
-        res.redirect("profile");
+        res.redirect("/profile");
     }
     }
 )
@@ -73,7 +73,7 @@ router.get("/google/redirect",passport.authenticate("google"),(req,res)=>{
         req.session.returnTo="";
         res.redirect(newPath);
     }else {
-        res.redirect("profile");
+        res.redirect("/profile");
     }
 })
 export default router;

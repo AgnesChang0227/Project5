@@ -5,8 +5,9 @@ import Post from "../models/post-model.js";
 //middleware
 const authCheck = (req,res,next)=>{
     console.log(req.originalUrl);//原本要去的位置
-    req.session.returnTo = req.originalUrl;
+    // req.session.returnTo = req.originalUrl;
     if (!req.isAuthenticated()){//如果沒有被認證(登入)
+        req.session.returnTo = req.originalUrl;
         res.redirect("/auth/login")//就自動導向去login page
     }else next();
 }
